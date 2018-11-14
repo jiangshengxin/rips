@@ -34,7 +34,7 @@ include 'config/general.php';
 	<script src="js/exploit.js"></script>
 	<script src="js/hotpatch.js"></script>
 	<script src="js/netron.js"></script>
-	<title>RIPS - A static source code analyser for vulnerabilities in PHP scripts</title>
+	<title>RIPS - 一个PHP脚本漏洞的静态源代码分析器-</title>
 </head>
 <body>
 
@@ -44,16 +44,16 @@ include 'config/general.php';
 	<tr><td width="75%" nowrap>
 		<table class="menutable" width="50%" style="float:left;">
 		<tr>
-			<td nowrap><b>path / file:</b></td>
+			<td nowrap><b>项目/文件路径:</b></td>
 			<td colspan="3" nowrap><input type="text" size=80 id="location" value="<?php echo BASEDIR; ?>" title="enter path to PHP file(s)" placeholder="/var/www/">
 			</td>
-			<td nowrap><input type="checkbox" id="subdirs" value="1" title="check to scan subdirectories" checked/>subdirs
+			<td nowrap><input type="checkbox" id="subdirs" value="1" title="check to scan subdirectories" checked/>子目录扫描
 			</td>
 		</tr>
 		<tr>
-			<td nowrap>verbosity level:</td>
+			<td nowrap>扫描结果等级:</td>
 			<td nowrap>
-				<select id="verbosity" style="width:100%" title="select verbosity level">
+				<select id="verbosity" style="width:100%" title="选择冗长的等级">
 					<?php 
 					
 						$verbosities = array(
@@ -72,7 +72,7 @@ include 'config/general.php';
 				</select>
 			</td>
 			<td align="right" nowrap>
-			vuln type:
+			漏洞类型:
 			</td>
 			<td>
 				<select id="vector" style="width:100%" title="select vulnerability type to scan">
@@ -109,10 +109,10 @@ include 'config/general.php';
 					?>
 				</select>
 			</td>
-			<td><input type="button" value="scan" style="width:100%" class="Button" onClick="scan(false);" title="start scan" /></td>
+			<td><input type="button" value="开始扫描" style="width:100%" class="Button" onClick="scan(false);" title="start scan" /></td>
 		</tr>
 		<tr>
-			<td nowrap>code style:</td>
+			<td nowrap>扫描结果展示风格:</td>
 			<td nowrap>
 				<select name="stylesheet" id="css" onChange="setActiveStyleSheet(this.value);" style="width:49%" title="select color schema for scan result">
 					<?php 
@@ -130,13 +130,13 @@ include 'config/general.php';
 				</select>	
 			</td>	
 			<td align="right">
-				/regex/:
+				/正则过滤结果/:
 			</td>
 			<td>
 				<input type="text" id="search" style="width:100%" />
 			</td>
 			<td>
-				<input type="button" class="Button" style="width:100%" value="search" onClick="search()" title="search code by regular expression" />
+				<input type="button" class="Button" style="width:100%" value="查询" onClick="search()" title="search code by regular expression" />
 			</td>
 		</tr>
 		</table>
@@ -164,41 +164,41 @@ include 'config/general.php';
 </div>
 
 <div id="result">
-	
-	<div style="margin-left:30px;color:#000000;font-size:14px">
-		<h3>Quickstart:</h3>
-		<p>Locate your local PHP source code <b>path/file</b> (e.g. <em>/var/www/project1/</em> or <em>/var/www/index.php</em>), choose the <b>vulnerability type</b> you are looking for and click <u>scan</u>!<br />
-		Check <b>subdirs</b> to include all subdirectories into the scan. It is recommended to scan only the root directory of your project. Files in subdirectories will be automatically scanned by RIPS when included by the PHP code. However enabling <b>subdirs</b> can improve the scan result and the include success rate (shown in the result).</p>
-		<h3>Advanced:</h3>
-		<p>Debug errors or improve your scan result by choosing a different <b>verbosity level</b> (default level 1 is recommended).<br />
-		After the scan finished 4 new button will appear in the upper right. You can select between different types of vulnerabilities that have been found by clicking on their name in the <b>stats</b> window. You can click <b>user input</b> in the upper right to get a list of entry points, <b>functions</b> for a list and graph of all user defined functions or <b>files</b> for a list and graph of all scanned files and their includes. All lists are referenced to the Code Viewer.</p>
-		<h3>Style:</h3>
-		<p>Change the syntax highlighting schema on-the-fly by selecting a different <b>code style</b>.<br />
-		Before scanning you can choose which way the code flow should be displayed: <b>bottom-up</b> or <b>top-down</b>.</p>
-		<h3>Icons:</h3>
-		<ul>
-		<li class="userinput"><font color="black"><b>User input</b> has been found in this line. Potential entry point for vulnerability exploitation.</font></li>
-		<li class="functioninput"><font color="black">Vulnerability exploitation depends on the <b>parameters</b> passed to the function declared in this line. Have a look at the calls in the scan result.<br />Click <b>&uArr;</b> or <b>&dArr;</b> to jump to the next declaration or call of this function.</font></li>
-		<li class="validated"><font color="black">User-implemented <b>securing</b> has been detected in this line. This may prevent exploitation.</font></li>
-		</ul>
-		<h3>Options:</h3>
-		<ul>
-		<li><div class="fileico"></div>&nbsp;Click the file icon to open the <b>Code Viewer</b> to review the original code. A new window will be opened with all relevant lines highlighted.<br />
-		Highlight variables temporarily by mouseover or persistently by clicking on the variable. Jump into the code of a user-defined function by clicking on the call. Click <u>return</u> on the bottom of the code viewer to jump back. This also works for nested function calls.</li>
-		<li><div class="minusico"></div>&nbsp;Click the minimize icon to <b>hide</b> a specific code trace. You may display it later by clicking the icon again.</li>
-		<li><div class="exploit"></div>&nbsp;Click the target icon to open the <b>Exploit Creator</b>. A new window will open where you can enter exploit details and create PHP Curl exploit code.</li>
-		<li><div class="help"></div>&nbsp;Click the help icon to get a <b>description</b>, example code, example exploitation, patch and related securing functions for this vulnerability type.</li>
-		<li><div class="dataleak"></div>&nbsp;Click the data leak icon to check if the output of the tainted sink <b>leaks</b> somewhere (is embedded to the HTTP response via echo/print).</li>
-		</ul>
-		<h3>Hints:</h3>
-		<ul>
-		<li>RIPS implements <i>static</i> source code analysis. It only scans source code files and will not execute the code.</li>
-		<li>Object-oriented code (classes) is not supported in this version.</li>
-		<li>Make sure RIPS has file permissions on the files to be scanned.</li>
-		<li>Don't leave the webinterface of RIPS open to the public internet. Use it on your <b>local</b> webserver only.</li>
-		<li>Only tested with Firefox.</li>
-		</ul>
-	</div>
+
+    <div style="margin-left:30px;color:#000000;font-size:14px">
+        <h3><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">快速开始：</font></font></h3>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">找到您当地的PHP源代码</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">路径/文件</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（例如</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">/ var / www / project1 /</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">/var/www/index.php</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">），选择</font><font style="vertical-align: inherit;">您要查找</font><font style="vertical-align: inherit;">的</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">漏洞类型</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，然后单击</font></font><u><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">扫描</font></font></u><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">！</font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                    检查</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">子目录</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">以包括扫描中的所有子目录。</font><font style="vertical-align: inherit;">建议仅扫描项目的根目录。</font><font style="vertical-align: inherit;">当PHP代码包含时，子目录中的文件将由RIPS自动扫描。</font><font style="vertical-align: inherit;">但是，启用</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">子目录</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可以改善扫描结果和包含成功率（显示在结果中）。</font></font></p>
+        <h3><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">高级：</font></font></h3>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过选择不同的</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">详细级别来</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">调试错误或改善扫描结果</font><font style="vertical-align: inherit;">（建议使用默认级别1）。</font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                    扫描完成后，右上角会出现4个新按钮。</font><font style="vertical-align: inherit;">您可以通过在</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">统计信息</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">窗口中</font><font style="vertical-align: inherit;">单击其名称来选择已找到的不同类型的漏洞</font><font style="vertical-align: inherit;">。</font><font style="vertical-align: inherit;">您可以点击</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用户输入</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">右上角拿到的入口点的列表，</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">功能</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">为所有用户定义的函数或列表和图形</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文件</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">的所有扫描的文件列表和图表及其包含。</font><font style="vertical-align: inherit;">所有列表都引用到代码查看器。</font></font></p>
+        <h3><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">样式：</font></font></h3>
+        <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过选择不同的</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">代码样式，</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">即时更改语法高亮模式</font><font style="vertical-align: inherit;">。</font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                    在扫描之前，您可以选择应显示代码流的方式：</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">自下而上</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">自上而下</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+        <h3><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">图标：</font></font></h3>
+        <ul>
+            <li class="userinput"><font color="black"><b><font style="vertical-align: inherit;"></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在此行中找到了</font><b><font style="vertical-align: inherit;">用户输入</font></b><font style="vertical-align: inherit;">。</font><font style="vertical-align: inherit;">漏洞利用的潜在切入点。</font></font></font></li>
+            <li class="functioninput"><font color="black"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">漏洞利用取决于</font><font style="vertical-align: inherit;">传递给此行中声明的函数</font><font style="vertical-align: inherit;">的</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">参数</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font><font style="vertical-align: inherit;">看看扫描结果中的调用。</font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">单击</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">⇑</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">⇓</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">跳转到下一个声明或调用此函数。</font></font></font></li>
+            <li class="validated"><font color="black"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">已在此行中检测到</font><font style="vertical-align: inherit;">用户实施的</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安全措施</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font><font style="vertical-align: inherit;">这可能会阻止剥削。</font></font></font></li>
+        </ul>
+        <h3><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">选项：</font></font></h3>
+        <ul>
+            <li><div class="fileico"></div><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&nbsp;单击文件图标以打开</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">代码查看器</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">以查看原始代码。</font><font style="vertical-align: inherit;">将打开一个新窗口，其中突出显示所有相关行。</font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                        通过鼠标悬停或持续点击变量暂时突出显示变量。</font><font style="vertical-align: inherit;">单击该调用，跳转到用户定义函数的代码。</font><font style="vertical-align: inherit;">单击</font><font style="vertical-align: inherit;">代码查看器底部的</font></font><u><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">return</font></font></u><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">以跳回。</font><font style="vertical-align: inherit;">这也适用于嵌套函数调用。</font></font></li>
+            <li><div class="minusico"></div><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&nbsp;单击最小化图标以</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">隐藏</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">特定代码跟踪。</font><font style="vertical-align: inherit;">您可以稍后再次单击该图标来显示它。</font></font></li>
+            <li><div class="exploit"></div><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&nbsp;单击目标图标以打开</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Exploit Creator</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font><font style="vertical-align: inherit;">将打开一个新窗口，您可以在其中输入漏洞利用详细信息并创建PHP Curl漏洞利用代码。</font></font></li>
+            <li><div class="help"></div><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&nbsp;单击帮助图标以获取</font><font style="vertical-align: inherit;">此漏洞类型</font><font style="vertical-align: inherit;">的</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">描述</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，示例代码，示例利用，修补程序和相关的安全功能。</font></font></li>
+            <li><div class="dataleak"></div><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&nbsp;单击数据泄漏图标以检查受污染的接收器的输出是否在</font><font style="vertical-align: inherit;">某处</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">泄漏</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（通过echo / print嵌入到HTTP响应中）。</font></font></li>
+        </ul>
+        <h3><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">提示：</font></font></h3>
+        <ul>
+            <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RIPS实现</font></font><i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">静态</font></font></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">源代码分析。</font><font style="vertical-align: inherit;">它只扫描源代码文件，不会执行代码。</font></font></li>
+            <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">此版本不支持面向对象的代码（类）。</font></font></li>
+            <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">确保RIPS对要扫描的文件具有文件权限。</font></font></li>
+            <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">不要将RIPS的Web界面打开到公共互联网。</font><font style="vertical-align: inherit;">仅</font><font style="vertical-align: inherit;">在</font></font><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本地</font></font></b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">网络服务器</font><font style="vertical-align: inherit;">上使用它</font><font style="vertical-align: inherit;">。</font></font></li>
+            <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">仅用Firefox测试过。</font></font></li>
+        </ul>
+    </div>
 	
 </div>
 
